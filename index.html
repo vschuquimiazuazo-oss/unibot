@@ -3,598 +3,1245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estrategia | Ejecutivo de Plataforma - Banco Unión S.A.</title>
+    <title>Propuesta de Valor - Ejecutivo de Servicio al Cliente</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #fcfcfc; /* Fondo muy sutil, casi blanco */
-        }
-        /* Color institucional principal */
-        .union-blue-dark { background-color: #1e3a8a; } 
-        .union-text-blue-dark { color: #1e3a8a; }
-
-        .text-section {
-            line-height: 1.5; 
-            color: #404040; 
-            font-size: 0.95rem; 
-        }
-        
-        /* ESTILOS DEL BANNER CON IMAGEN DE FONDO Y DEGRADADO */
-        .modern-banner {
-            position: relative;
-            /* Altura MODIFICADA: Aumentada a 50vh en móvil y 85vh en desktop */
-            min-height: 50vh; 
-            background-image: url('https://i.ibb.co/sJgJgf72/7dvtjilo.png');
-            background-size: cover;
-            background-position: center right; 
-            overflow: hidden;
-            color: white; 
-        }
-        @media (min-width: 1024px) {
-            .modern-banner {
-                min-height: 85vh; /* ALTURA AUMENTADA AQUÍ */
+    <!-- Librería para las gráficas -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Plugin para mostrar los porcentajes en las barras (Data Labels) -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    
+    
+    <!-- Fuentes de Google: Montserrat (Main), Cormorant Garamond (Section Headers), Raleway (Hero Title) -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,700;1,400;0,600&family=Cormorant+Garamond:wght@700&family=Raleway:wght@900&display=swap" rel="stylesheet">
+    
+    
+    <!-- Configuración personalizada de Tailwind CSS (Colores y Fuentes) -->
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Colores extraídos del logo/gráfica del Banco
+                        'bu-dark': '#003775',   // Azul Oscuro (texto principal del logo)
+                        'bu-main': '#00B4C8',   // Cian (color principal de la gráfica - Azul Eléctrico)
+                        'bu-accent': '#D90059', // Magenta/Rojo (acento principal)
+                        'bu-yellow': '#FFD600', // Amarillo (acento secundario)
+                        'bu-light': '#E0E0E0',  // Gris Claro (fondo/detalles)
+                        'bu-bg': '#f0f4ff', // Fondo principal de la página (azul muy claro)
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                        heading: ['Raleway', 'sans-serif'], // Fuente gruesa para el banner
+                    }
+                }
             }
         }
+    </script>
 
-        .modern-banner::before {
+    
+    <!-- Estilos CSS personalizados para efectos visuales y adaptabilidad -->
+<style>
+        :root {
+            /* Fuente base 14px para look minimalista */
+            font-size: 14px; 
+        }
+        @media (min-width: 640px) {
+            :root {
+                font-size: 15px; 
+            }
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f0f4ff; /* Un azul muy claro (bu-bg) */
+            color: #1f2937; /* Gris oscuro para el texto principal */
+        }
+        
+        /* Liquid Glass Effects (Solo para Cards - Mantienen fondo blanco para destacar) */
+        .liquid-glass-card {
+            background: rgba(255, 255, 255, 1); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .liquid-glass-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: #00B4C8; /* Borde Cian Corporativo (bu-main) al hacer hover */
+        }
+        
+        /* Estilo para palabras interactivas destacadas */
+        .highlight-interactive {
+            display: inline-block; 
+            position: relative;
+            z-index: 1; 
+            transition: all 0.3s ease-out; 
+            cursor: pointer;
+            font-weight: 700; 
+            color: #003775; /* bu-dark */
+        }
+        .highlight-interactive:hover {
+            transform: scale(1.05); 
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 
+                         0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Header Base Style (Estado inicial) */
+        .header-glass-effect {
+            /* CAMBIO: Se agrega ligera transparencia al inicio (0.95) */
+            background-color: rgba(240, 244, 255, 0.95); 
+            backdrop-filter: blur(5px); 
+            -webkit-backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
+            transition: all 0.3s ease;
+            height: 60px; 
+            display: flex;
+            align-items: center;
+        }
+
+        /* Header Scrolled Style (Estado cuando se está sobre el contenido claro - más transparente) */
+        .header-glass-effect.scrolled-down {
+            /* Se mantiene el efecto glass transparente */
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05); 
+        }
+
+        .nav-logo {
+            height: 38px; 
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+        /* Subrayado animado */
+        .nav-link::after {
             content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: '#D90059'; /* bu-accent */
+            transition: width 0.3s ease-in-out;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .nav-link.active {
+            color: #003775 !important; /* bu-dark */
+            font-weight: 700;
+        }
+
+        /* Hero Section (Contenedor principal que fija la altura) */
+        .hero-section {
+            position: relative;
+            height: 110vh; 
+            overflow: hidden; 
+        }
+
+        /* Contenedor de las imágenes de fondo */
+        #hero-background-images {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        /* Estilo base para ambas imágenes */
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 2s ease-in-out; 
+            opacity: 0; 
+        }
+        /* La primera imagen debe ser visible al cargar */
+        .hero-image.active {
+            opacity: 1;
+        }
+
+        /* Hero Overlay (Se mantiene para el degradado oscuro y el texto) */
+        .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            /* Degradado de IZQUIERDA (claro) a DERECHA (oscuro) */
-            background: linear-gradient(to right, rgba(30, 58, 138, 0.98) 0%, rgba(30, 58, 138, 0.9) 70%, rgba(30, 58, 138, 0.5) 100%); 
-            z-index: 10;
-        }
-
-        .modern-banner > div {
-            position: relative; 
-            z-index: 20;
-        }
-
-        /* Animación para botón del ChatBot (ACTUALIZADA A AZUL INSTITUCIONAL - MÁS ELEGANTE) */
-        .unibot-btn-pulse {
-            transition: all 0.4s ease-in-out;
-            animation: elegant-pulse 3.5s infinite;
-            flex-direction: column;
+            z-index: 10; 
+            /* Degradado SUAVE de izquierda a derecha (Azul Oscuro 95% a Azul Oscuro 50%) */
+            background: linear-gradient(to right, 
+                        rgba(0, 55, 117, 0.95) 0%,     /* Azul Oscuro BU (95% opacidad) - Inicio */
+                        rgba(0, 55, 117, 0.50) 100%);  /* Azul Oscuro BU (50% opacidad) - Fin */
+            display: flex;
             align-items: center;
-            /* Sombra inicial azul fuerte */
-            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.6); 
-        }
-        @keyframes elegant-pulse {
-            0%, 100% { 
-                transform: scale(1); 
-                box-shadow: 0 10px 20px rgba(30, 58, 138, 0.4); /* Sombra Azul */
-            }
-            50% { 
-                transform: scale(1.02); 
-                box-shadow: 0 15px 30px rgba(30, 58, 138, 0.8); /* Sombra Azul más intensa */
-            }
+            justify-content: flex-start;
+            padding: 4rem 6rem;
         }
         
-        .sticky-header {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            z-index: 50;
+        /* Contenedor del texto para usar flexbox */
+        .hero-content-flex {
+            display: flex;
+            align-items: center;
+            max-width: 100%; 
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
+
+        /* Hero Text Container (Limitado para evitar que el texto sea demasiado ancho) */
+        .hero-text-content {
+            flex-grow: 1; 
+            max-width: 60%; 
+        }
+        
+        .hero-title {
+            font-family: 'Raleway', sans-serif; 
+            font-size: 6rem; 
+            font-weight: 900; 
+            color: #ffffff; 
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        /* Hero Subtitle */
+        .hero-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem; 
+            font-weight: 300; 
+            color: #FFD600; /* bu-yellow */
+            letter-spacing: 2px;
+            cursor: pointer; 
+            margin: 1.5rem 0; 
+            transition: text-shadow 0.3s ease-out; 
+        }
+        .hero-subtitle:hover {
+            /* Brillo del mismo color (amarillo) */
+            text-shadow: 0 0 10px rgba(255, 214, 0, 0.9), 
+                         0 0 20px rgba(255, 214, 0, 0.6); 
+        }
+        
+        /* Efecto de agrandamiento a los títulos de sección (CENTRADOS) */
+        .section-heading {
+            font-family: 'Cormorant Garamond', serif;
+            color: #003775; /* bu-dark */
+            font-size: 2.8rem;
+            /* Se eliminan las propiedades flex para permitir que la imagen se ponga encima */
+            text-align: center; 
+            transition: transform 0.2s ease-out;
             margin-left: auto;
             margin-right: auto;
-            height: 300px;
-            max-height: 380px;
         }
-        
-        /* Estilos de Tarjetas de Producto */
-        .product-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border: 2px solid #e0e7ff; /* Indigo-100 */
-            background-color: #f8fafc; /* Slate-50 */
-            color: #1e3a8a; /* Deep Blue text */
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
-            font-weight: 600;
-            display: flex; 
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            min-height: 70px; 
-            padding: 0.75rem; 
-            font-size: 0.875rem; 
-        }
-        .product-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.25);
-            border-color: #6366f1; /* Indigo-500 */
-            background-color: #e0e7ff; 
-        }
-        .product-card.active {
-            background-color: #1e3a8a; /* Deep Union Blue */
-            color: white;
-            font-weight: 700;
-            box-shadow: 0 0 10px rgba(99, 102, 241, 0.65), 0 4px 10px rgba(0, 0, 0, 0.3); 
-            transform: scale(1.03) translateY(-2px);
-            border-color: #6366f1; 
+        .section-heading:hover {
+             transform: scale(1.02); 
         }
 
-        /* Ajuste de Prominencia de Descripción de Producto */
-        #product-description-container {
-            transition: all 0.3s;
-            /* Sombra Aumentada y Anillo sutil */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+        /* Estilo para la imagen del UniBot en la Sección 4 */
+        .section4-image {
+            width: 562px; /* 375px * 1.5 = 562.5px */
+            height: auto;
+            object-fit: contain;
+            margin-right: 2.5rem; 
+            cursor: pointer; 
         }
-        #product-description-container:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 4px #bfdbfe; 
-        }
-
-
-        /* Estilos de Fichas Estratégicas (Sección 2) */
-        .strategic-card {
-            padding: 1.5rem;
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            /* Borde Azul para destacar la sección 2 */
-            border-top: 5px solid #4f46e5; 
-            transition: all 0.3s;
-            border: 2px solid #e0e7ff; 
-        }
-        .strategic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
-            border-color: #4f46e5;
-        }
-
-        /* Estilos de Pilares de Servicio (Sección 3) */
-        .pillar-item {
-            padding: 2.5rem 1.25rem; 
-            border-radius: 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-            /* Fichas en BLANCO (Sección ya era blanca, mantenido) */
-            background-color: white; 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
-        }
-        .pillar-item:hover {
-            /* HOVER CELESTE SUAVE */
-            background-color: #eff6ff; /* Blue-50 */
-            border-color: #93c5fd; /* Blue-300 */
-            transform: translateY(-3px);
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-        }
-        .pillar-interdependency {
+        /* Contenedor del texto y la imagen en Sección 4 */
+        .section4-content-wrapper {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            /* Flecha Azul Oscuro */
-            color: #1e3a8a; 
-            font-weight: 700;
-            text-transform: uppercase;
+            align-items: center; 
+            justify-content: center; 
+            margin-bottom: 3.5rem; 
+            max-width: 1200px; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Texto dentro del wrapper de Sección 4 */
+        .section4-text-content {
+            flex-grow: 1;
+            align-self: center; 
+            max-width: 450px; 
+        }
+        /* Icono del Chanchito dentro del botón */
+        .chancho-icon {
+            width: 100px; 
+            height: 100px; 
+            margin-bottom: 0.5rem; 
+            transition: transform 0.4s ease; 
+            object-fit: contain;
         }
 
-        /* Animación de entrada para todas las secciones */
-        .animate-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlide 1s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        @keyframes fadeInSlide {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
-        /* Reset visual-card hover for the charts/images that are not services */
-        .visual-card:hover {
-            transform: scale(1.02) translateY(-3px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        /* Botón Estético - Gradiente Corporativo Azul/Cian */
+        .chatbot-button-stylish {
+            background: linear-gradient(90deg, #003775 0%, #00B4C8 100%); /* bu-dark a bu-main */
+            box-shadow: 0 10px 20px rgba(0, 55, 117, 0.6); 
+            transition: all 0.4s ease;
+            border: none;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+            color: white; 
         }
-        .visual-card {
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .chatbot-button-stylish:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 55, 117, 0.8);
+            opacity: 0.95;
+            color: #FFD600; /* Texto Amarillo en hover (bu-yellow) */
+        }
+        .chatbot-button-stylish:active {
+            transform: scale(0.98);
+        }
+        /* Efecto de agrandamiento del Chancho dentro del botón al hacer hover */
+        .chatbot-button-stylish:hover .chancho-icon {
+            transform: scale(1.2); 
         }
         
-        /* Estilo específico para el botón UniBot con bordes redondos completos */
-        .unibot-button {
-            border-radius: 9999px; /* rounded-full */
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .hero-text-content {
+                max-width: 100%; 
+            }
+            .section4-image {
+                width: 375px; 
+                margin-right: 1.5rem;
+            }
+            .section4-content-wrapper {
+                flex-direction: column; 
+                text-align: center;
+            }
+            .section4-image {
+                margin-right: 0;
+                margin-bottom: 1.5rem; 
+            }
+            /* Resetear max-width para que ocupe todo el ancho disponible en móvil */
+            .section4-text-content {
+                max-width: 90%; 
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 65vh; 
+            }
+            .hero-overlay {
+                padding: 2rem;
+                justify-content: center; 
+                align-items: center;
+            }
+            .hero-content-flex {
+                 justify-content: center; 
+                 text-align: center;
+            }
+            .hero-title {
+                font-size: 3.5rem; 
+            }
+            .hero-subtitle {
+                font-size: 1.1rem; 
+                margin: 1rem 0; 
+            }
+            .section-heading {
+                font-size: 2rem;
+            }
+            .chatbot-button-stylish {
+                font-size: 1rem;
+                padding: 0.75rem 1.5rem;
+            }
+            .section4-image {
+                width: 270px; 
+            }
         }
 
-        @media (max-width: 767px) {
-            .pillar-diagram {
-                flex-direction: column;
+        /* Contenedor principal para aplicar el espaciado del 15% (70% de ancho) */
+        .main-content-container {
+            /* 70% del ancho (100% - 15% - 15%) */
+            width: 70%;
+            margin-left: 15%;
+            margin-right: 15%;
+            padding-top: 2.5rem;
+            padding-bottom: 4rem; 
+            background-color: transparent; 
+        }
+        
+        /* Las secciones interiores y gráficas tendrán fondo blanco. */
+        .section-block {
+             /* CAMBIO: Se remueve el fondo blanco para que tome el color del body (#f0f4ff) */
+             background-color: transparent; 
+             padding: 0; /* Las secciones deben tener el padding dentro de la tarjeta si tienen fondo */
+        }
+        
+        /* Ajustes de media query para mantener el espaciado en pantallas pequeñas */
+        @media (max-width: 1024px) {
+            .main-content-container {
+                /* Permitir que se reduzca el padding en móvil, manteniendo algo de margen fijo */
+                width: 90%;
+                margin-left: 5%;
+                margin-right: 5%;
+                padding-left: 0;
+                padding-right: 0;
             }
-            .pillar-item {
-                width: 100%;
-                margin-bottom: 2rem;
-            }
-            .pillar-interdependency {
-                margin: 2rem 0;
-            }
-            /* Asegura que el botón se vea bien en móvil */
-            .unibot-button {
-                padding-left: 2rem;
-                padding-right: 2rem;
+             .section-block {
+                 padding: 0; 
+             }
+        }
+        /* Ajuste para pantallas muy pequeñas (Ej: 320px) para evitar scroll horizontal excesivo */
+        @media (max-width: 480px) {
+            .main-content-container {
+                width: 95%; /* Un poco menos de margen */
+                margin-left: 2.5%;
+                margin-right: 2.5%;
             }
         }
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- ESTILOS ACTUALIZADOS DEL CARRUSEL INFINITO (BORDE A BORDE) --- */
+        /* ---------------------------------------------------------------------- */
+
+        /* Contenedor principal del Carrusel - Ancho Completo */
+        .carousel-container {
+            overflow: hidden;
+            /* Altura mayor: 15rem (240px) en móvil, 18rem (288px) en desktop */
+            height: 15rem; /* 240px */
+            width: 100%;
+            position: relative;
+            background-color: transparent; 
+            border: none;
+            box-shadow: none; 
+            
+            /* Ajuste: Se elimina el margen inferior (mb-1.5rem) */
+            margin: 0; 
+        }
+        @media (min-width: 768px) {
+            .carousel-container {
+                height: 18rem; /* 288px */
+            }
+        }
+        
+        .carousel-track {
+            display: flex;
+            width: fit-content; 
+            will-change: transform;
+            height: 100%;
+            gap: 0; 
+        }
+        
+        .carousel-image-wrapper {
+            flex-shrink: 0;
+            height: 100%;
+            width: auto; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0; 
+            margin: 0;
+        }
+
+        .carousel-image {
+            height: 100%; 
+            width: auto; 
+            object-fit: cover; 
+            transition: filter 0.6s ease, transform 0.4s ease;
+            filter: grayscale(100%); /* Blanco y negro por defecto */
+            cursor: pointer;
+            border-radius: 0; 
+            box-shadow: none; 
+            
+            position: relative;
+            overflow: hidden; 
+        }
+        
+        /* ESTADO HOVER: SÓLO LA IMAGEN DONDE ESTÁ EL CURSOR SE PONE A COLOR Y HACE ZOOM INTERNO */
+        .carousel-image:hover {
+            filter: grayscale(0%); /* Color */
+            /* ZOOM INTERNO */
+            transform: scale(1.1); 
+        }
+        
+        /* Contenedor del título de la Sección 2 para alinear con el carrusel */
+        .section-2-header-container {
+            /* Se elimina el padding superior ya que ya no hay margen */
+            padding-top: 0; 
+        }
+        
+        /* ---------------------------------------------------------------------- */
+        /* --- ESTILOS PARA LA IMAGEN DE FESTEJO (ENTRE SECCIONES 2 Y 3) --- */
+        /* ---------------------------------------------------------------------- */
+        .festejo-banner {
+            width: 100%; 
+            /* ALTURA: Ajustada a la altura máxima de la imagen y se hace un poco más grande para que haya más fondo visible */
+            height: 20rem; /* 320px de imagen + 40px de padding/margen = 320px de altura total en desktop */
+            max-height: 20rem; 
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            /* CAMBIO: Fondo igual al del cuerpo (bu-bg) */
+            background-color: #f0f4ff; 
+            
+            /* CAMBIO: Sombra sutil eliminada */
+            /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); */ 
+            margin: 0; 
+            padding: 0;
+        }
+        .festejo-image {
+             /* 5 veces el tamaño anterior (320px de ancho/alto base) */
+             width: 320px;
+             height: 320px;
+             object-fit: contain;
+             transition: transform 0.5s ease;
+             cursor: pointer;
+        }
+        .festejo-image:hover {
+            transform: scale(1.05) rotate(3deg); /* Pequeño efecto de giro */
+        }
+        @media (max-width: 768px) {
+            .festejo-banner {
+                /* Altura para móvil */
+                height: 15rem; /* 200px de imagen + margen */
+                max-height: 15rem;
+            }
+             .festejo-image {
+                 /* Ajuste para móvil (ej: 200px) */
+                 width: 200px; 
+                 height: 200px;
+            }
+        }
+        
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <!-- CABECERA INSTITUCIONAL FIJA -->
-    <header class="sticky top-0 bg-white py-4 border-b border-gray-100 sticky-header">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <!-- Nuevo Logo -->
-            <div class="flex items-center">
-                <img src="https://agetic.gob.bo/sites/default/files/inline-images/banco-union-logo.png" 
-                     alt="Logo Banco Unión S.A." 
-                     class="h-8 sm:h-10 mr-3 object-contain"
-                     onerror="this.onerror=null;this.src='https://placehold.co/150x40/1e3a8a/ffffff?text=BUN';"
-                >
+    
+    <!-- HEADER STICKY -->
+<header class="sticky top-0 header-glass-effect shadow-md z-50">
+        
+        <!-- Navegación Principal -->
+<nav class="container mx-auto px-6 py-2 flex justify-between items-center h-full">
+            <a href="#" class="flex items-center">
+                
+                <!-- Logo del Banco -->
+<img src="https://agetic.gob.bo/sites/default/files/inline-images/banco-union-logo.png" onerror="this.onerror=null; this.src='https://placehold.co/38x38/003775/ffffff?text=BU';" alt="Banco Union Logo" class="nav-logo">
+            </a>
+            
+            <!-- Menú Desktop -->
+<div class="hidden md:flex space-x-6 lg:space-x-8 text-gray-700">
+                <a href="#definicion" class="nav-link text-sm" data-section="definicion">Servicio al Cliente</a>
+                <a href="#valores" class="nav-link text-sm" data-section="valores">Valores Esenciales</a>
+                <a href="#rol" class="nav-link text-sm" data-section="rol">Rol del Ejecutivo</a>
+                
+                <!-- Enlace de Innovación destacado -->
+<a href="#innovacion" class="nav-link text-sm text-bu-accent hover:text-bu-dark" data-section="innovacion">UniBot IA</a>
             </div>
-            <!-- Título ajustado -->
-            <h1 class="text-sm sm:text-base font-semibold text-stone-600">
-                Estrategia Ejecutiva de Plataforma
-            </h1>
+            
+            <!-- Botón de Menú Móvil -->
+<button id="mobile-menu-button" class="md:hidden text-bu-dark focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        
+        <!-- Menú Móvil Desplegable -->
+<div id="mobile-menu" class="hidden md:hidden bg-white shadow-md py-2">
+            <a href="#definicion" class="block px-6 py-2 text-bu-dark hover:bg-bu-light/50">Servicio al Cliente</a>
+            <a href="#valores" class="block px-6 py-2 text-bu-dark hover:bg-bu-light/50">Valores Esenciales</a>
+            <a href="#rol" class="block px-6 py-2 text-bu-accent hover:bg-bu-light/50">Rol del Ejecutivo</a>
+            <a href="#innovacion" class="block px-6 py-2 text-bu-accent hover:bg-bu-light/50">UniBot IA</a>
         </div>
     </header>
 
-    <!-- BANNER PRINCIPAL (SECCIÓN 1) - TÍTULO ACTUALIZADO -->
-    <section class="modern-banner animate-in flex items-center" style="animation-delay: 0.2s;">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center py-16 md:py-20">
-            <!-- Texto a la IZQUIERDA (Garantizando legibilidad por el degradado) -->
-            <div class="lg:col-span-2 space-y-4">
-                <!-- TÍTULO PRINCIPAL SOLICITADO -->
-                <h2 class="text-4xl md:text-5xl font-extrabold leading-tight">Ejecutivos de Servicio al cliente</h2>
-                <!-- Subtítulo ajustado al nuevo enfoque -->
-                <p class="text-lg font-light text-blue-100 max-w-xl">
-                    Una estrategia centrada en la excelencia y la eficiencia digital, potenciando el rol del ejecutivo para el crecimiento del Banco Unión S.A.
-                </p>
+    
+    <!-- SECCIÓN HERO (BANNER CON TRANSICIÓN DE FONDO) -->
+<div class="hero-section">
+        
+        <!-- Contenedor de Imágenes de Fondo (Transición con JS) -->
+<div id="hero-background-images">
+            
+            <!-- Imagen 1 -->
+            <div class="hero-image active" style="background-image: url('https://abi.bo/images/2025/Marzo/24/p8li1mme.png');" data-index="0"></div>
+            
+            <!-- Imagen 2 -->
+<div class="hero-image" style="background-image: url('https://abi.bo/images/2025/Marzo/24/7dvtjilo.png');" data-index="1"></div>
+        </div>
+
+        <div class="hero-overlay">
+            <div class="hero-content-flex">
+                
+                <div class="hero-text-content">
+                    <h1 class="hero-title">EJECUTIVO DE SERVICIO AL CLIENTE</h1>
+                    
+                    <!-- Subtítulo con el nombre -->
+<p class="hero-subtitle">LIC. NOELIA KAREN ALANOCA MAMANI</p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- SECCIÓN 2: PORTAFOLIO DE CAPTACIÓN Y GESTIÓN COMERCIAL (FONDO BLANCO) -->
-    <section class="py-16 md:py-28 bg-white animate-in" style="animation-delay: 0.4s;">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-            <div class="text-center">
-                <h3 class="text-2xl md:text-3xl font-extrabold text-blue-900 mb-3">2. Portafolio de Captación y Gestión Comercial</h3>
-                <p class="text-section max-w-3xl mx-auto text-sm">
-                    La misión se centra en <strong>Brindar Atención con Calidad y Calidez</strong> mientras se impulsa la captación masiva de productos de ahorro e inversión clave.
-                </p>
-            </div>
+    
+    <!-- CONTENIDO PRINCIPAL (Centrado) -->
+<main class="main-content-container mx-auto">
 
-            <!-- Contenedor para Imagen y Portafolio (Layout 1:2) -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        <!-- SECCIÓN 1: ¿QUÉ ES EL SERVICIO AL CLIENTE? -->
+<section id="definicion" class="pt-24 mb-8 section-block">
+            <h3 class="text-center font-bold section-heading mb-8">1. ¿QUÉ ES EL SERVICIO AL CLIENTE?</h3>
+            
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-4xl mx-auto leading-relaxed">
+                Es ser el <strong class="highlight-interactive">NEXO ESTRATÉGICO</strong> entre el Banco y sus usuarios. Buscamos ofrecer soluciones con garantía de experiencia de confianza basada en <strong class="highlight-interactive">Calidad y Calidez</strong>.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                 
-                <!-- Columna 1: Imagen -->
-                <div class="lg:col-span-1">
-                    <img src="https://unifranz.edu.bo/wp-content/uploads/2023/10/pexels-george-dolgikh-13265947.png" alt="Imagen de Portafolio de Captación" class="visual-card rounded-xl shadow-xl w-full object-cover h-80" onerror="this.onerror=null;this.src='https://placehold.co/400x280/e5e7eb/404040?text=Portafolio+de+Ahorro';">
+                <!-- Card 1: Calidad -->
+<div class="liquid-glass-card p-6 rounded-xl shadow-lg text-center">
+                    <div class="text-4xl mb-2 flex items-center justify-center text-bu-accent">
+                         ✅
+                    </div>
+                    <h4 class="text-lg font-semibold text-bu-dark mb-2">Compromiso con la Calidad</h4>
+                    <p class="text-gray-700 leading-normal text-sm">Se basa en el manejo y comunicación exacta de información sensible como los <strong class="highlight-interactive">Tarifarios de Servicios y Tasas de Interés</strong>, garantizando el cumplimiento normativo y total transparencia.</p>
                 </div>
                 
-                <!-- Columna 2: Portafolio Interactivo con TARJETAS (Mayor Prominencia) -->
-                <div class="lg:col-span-2 bg-white p-5 md:p-7 rounded-xl shadow-2xl border border-gray-100" id="product-description-container">
-                    <h4 class="text-lg font-extrabold text-blue-900 mb-5 border-b pb-2">Productos Estratégicos de Captación (Seleccione)</h4>
-                    
-                    <!-- Grid de Tarjetas de Productos -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 mb-5">
-                        <span class="product-card rounded-lg" data-product="Normal">Caja de Ahorro Normal</span>
-                        <span class="product-card rounded-lg" data-product="Uniplus">Uniplus</span>
-                        <span class="product-card rounded-lg" data-product="Funcionario">Funcionario Público</span>
-                        <span class="product-card rounded-lg" data-product="Mujer">Mujer</span>
-                        <span class="product-card rounded-lg" data-product="MujerUniplus">Mujer Uniplus</span>
-                        <span class="product-card rounded-lg" data-product="Miniplus">Miniplus</span>
-                        <span class="product-card rounded-lg" data-product="Futuros">Futuros Plus</span>
-                        <span class="product-card rounded-lg" data-product="DPF">DPF Estratégico</span>
+                <!-- Card 2: Productos -->
+<div class="liquid-glass-card p-6 rounded-xl shadow-lg text-center">
+                    <div class="text-4xl mb-2 flex items-center justify-center text-bu-main">
+                        💰
                     </div>
+                    <h4 class="text-lg font-semibold text-bu-dark mb-2">Acceso Integral a Productos</h4>
+                    <p class="text-gray-700 leading-normal text-sm">Facilitamos la <strong class="highlight-interactive">oferta integral</strong> de productos (Cuentas, Préstamos, DPF) y promociones específicas como Cajas de Ahorro UniPlus, Mujer, MiniPlus y Futuros Plus.</p>
+                </div>
+            </div>
+        </section>
+        
+
+
+    </main>
+    
+    <!-- CARRUSEL INFINITO DE IMÁGENES -->
+<section class="carousel-container" id="full-width-carousel-container">
+        <div id="carousel-track" class="carousel-track">
+            <!-- Las imágenes se insertan aquí vía JavaScript -->
+</div>
+    </section>
+        
+    <main class="main-content-container mx-auto">
+        
+        <!-- SECCIÓN 2: VALORES ESENCIALES DEL ÁREA -->
+<section id="valores" class="pt-5 mt-10 section-2-header-container section-block">
+
+
+
+            <!-- NOTA: Se ha quitado el "mb-24" de la sección para eliminar el espacio inferior -->
+            <h3 class="text-center font-bold section-heading mb-8">2. VALORES ESENCIALES DEL ÁREA</h3>
+            <p class="text-center text-lg text-gray-700 mb-12 max-w-4xl mx-auto leading-relaxed">
+                Nuestra misión de servicio se sustenta en el compromiso social y la ética profesional.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Card 1: Inclusión -->
+<div class="liquid-glass-card p-8 rounded-xl text-center shadow-lg">
+                    <div class="text-4xl mb-3 text-bu-main">🌎</div>
+                    <h4 class="text-xl font-bold text-bu-dark mb-2">Inclusión Financiera</h4>
+                    <p class="text-gray-700 leading-normal text-sm">Garantizar acceso simple y equitativo a todos los productos financieros, promoviendo soluciones para cada segmento de la población boliviana.</p>
+                </div>
+                
+                <!-- Card 2: Empatía -->
+<div class="liquid-glass-card p-8 rounded-xl text-center shadow-lg">
+                    <div class="text-4xl mb-3 text-bu-accent">❤️</div>
+                    <h4 class="text-xl font-bold text-bu-dark mb-2">Empatía y Calidez</h4>
+                    <p class="text-gray-700 leading-normal text-sm">Personalizar la atención y priorizar la necesidad real del cliente con sensibilidad y calidez, fortaleciendo la relación de largo plazo y confianza.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- SECCIÓN DE IMAGEN DE FESTEJO (ANCHO COMPLETO) -->
+    <!-- Fondo plano sin sombra -->
+<section class="festejo-banner" style="height: 20rem;"> 
+        <img src="https://i.ibb.co/spbGX2zg/festeja.png" 
+             alt="Imagen Destacada de Festejo" 
+             class="festejo-image"
+             onerror="this.onerror=null;this.src='https://placehold.co/320x320/FFD600/003775?text=🎉+ÉXITO+🎉';">
+    </section>
+
+    
+    <main class="main-content-container mx-auto mt-20">
+
+
+        <!-- NOTA: Se ha quitado el separador horizontal y el margen superior aquí -->
+
+        
+        <!-- SECCIÓN 3: ROL Y FUNCIONES CLAVE DEL EJECUTIVO -->
+        <!-- NOTA: Se ha quitado el "pt-16 -mt-16" para eliminar el espacio extra -->
+<section id="rol" class="mb-24 section-block">
+            
+            <h3 class="font-bold section-heading mb-8">
+                3. ROL Y FUNCIONES CLAVE DEL EJECUTIVO
+            </h3>
+            <p class="text-center text-lg text-gray-700 mb-10 max-w-4xl mx-auto leading-relaxed">
+                El Ejecutivo brinda <strong class="highlight-interactive">experiencia positiva</strong> a los <strong class="highlight-interactive">clientes y usuarios financieros</strong>.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1: Venta Consultiva -->
+<div class="liquid-glass-card p-6 rounded-xl shadow-lg text-center">
                     
-                    <!-- Descripción del Producto -->
-                    <div id="product-description" class="p-4 bg-blue-50 rounded-lg min-h-[60px] text-blue-900 border-l-4 border-blue-500 font-semibold text-sm transition-all duration-300 shadow-inner">
-                        Haga clic en un producto para desplegar su descripción detallada y enfoque.
+                    <div class="text-2xl mb-2 flex items-center justify-center text-bu-accent">🤝</div>
+                    
+                    <h4 class="text-lg font-semibold text-bu-dark mb-2">Venta Consultiva</h4>
+                    
+                    <p class="text-gray-700 leading-normal text-sm">Informar proactivamente al cliente para maximizar su beneficio y promover la venta cruzada de servicios y productos promocionales.</p>
+                </div>
+                
+                <!-- Card 2: Control Regulatorio -->
+<div class="liquid-glass-card p-6 rounded-xl shadow-lg text-center">
+                    
+                    <div class="text-2xl mb-2 flex items-center justify-center text-bu-main">📄</div>
+                    
+                    <h4 class="text-lg font-semibold text-bu-dark mb-2">Control Regulatorio</h4>
+                    
+                    <p class="text-gray-700 leading-normal text-sm">Garantizar la correcta comunicación de tasas y costos, manteniendo la información confidencial y asegurando la aplicación de la normativa vigente.</p>
+                </div>
+                
+                <!-- Card 3: Eficiencia Operativa -->
+<div class="liquid-glass-card p-6 rounded-xl shadow-lg text-center">
+                    
+                    <div class="text-2xl mb-2 flex items-center justify-center text-bu-accent">⚙️</div>
+                    
+                    <h4 class="text-lg font-semibold text-bu-dark mb-2">Eficiencia Operativa</h4>
+                    
+                    <p class="text-gray-700 leading-normal text-sm">Optimizar procesos para facilitar la apertura de cuentas de manera rápida y eficiente para todos los segmentos de clientes, minimizando la fricción.</p>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-bu-light opacity-60">
+
+        
+        <!-- SECCIÓN 4: UNIBOT -->
+<section id="innovacion" class="pt-16 -mt-16 mb-24 section-block">
+            <h3 class="text-center font-bold section-heading mb-12">4. UNIBOT: INNOVACIÓN Y ESCALABILIDAD</h3>
+            
+            
+            <!-- Contenido principal UniBot (Imagen + Texto) -->
+<div class="section4-content-wrapper mb-16">
+                
+                
+                <!-- Imagen Chancho/UniBot -->
+<img src="https://i.ibb.co/wF0WG6C1/saludando.png" 
+                     alt="CHANCHO UniBot Saludando" 
+                     class="section4-image transition-transform duration-300 hover:scale-[1.03] flex-shrink-0"
+                     onerror="this.onerror=null;this.src='https://placehold.co/562x562/00B4C8/ffffff?text=Imagen+UniBot';"
+                >
+                
+                
+                <!-- Texto Explicativo -->
+<div class="section4-text-content pr-0 md:pr-12 lg:pr-24">
+                    
+
+<p class="text-lg text-gray-700 mb-4 leading-relaxed">
+                        La fusión estratégica de la <strong class="highlight-interactive text-bu-main">excelencia humana</strong> del ejecutivo con el poder de la <strong class="highlight-interactive">Inteligencia Artificial</strong>.
+                    </p>
+                    <p class="text-base text-gray-600 italic">
+                        UniBot actúa como un <strong class="highlight-interactive">primer filtro 24/7</strong> para consultas recurrentes (<strong class="highlight-interactive">tasas, requisitos, cálculos de intereses y recomendaciones de productos</strong>), liberando tiempo valioso del personal para tareas de alto impacto como la <strong class="highlight-interactive">venta consultiva</strong> y la resolución de casos complejos.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Ficha: Impacto Estratégico Cuantificado -->
+<div class="liquid-glass-card p-8 md:p-10 rounded-xl shadow-2xl">
+                <h4 class="text-xl font-bold text-center text-bu-dark mb-10">Impacto Estratégico Cuantificado</h4>
+                
+                
+
+<div class="flex flex-col space-y-8">
+                    
+                    <!-- Bloque de Gráfica 1: Experiencia -->
+<div>
+                        <h5 class="text-lg font-semibold text-bu-main mb-6 text-center flex items-center justify-center">
+                             <span class="text-2xl mr-2 text-bu-accent">💡</span> Mejora de la Experiencia y Disponibilidad
+                        </h5>
+                        
+                        <!-- Contenedor de Gráfica 1 -->
+<div class="chart-container liquid-glass-card p-4 mb-8 h-[20rem] md:h-[25rem] relative"> 
+                            <canvas id="experienceChart"></canvas>
+                        </div>
+                        
+                        <!-- Descripción 1 -->
+<p class="text-center text-gray-700 mt-6 leading-normal text-sm mb-10">
+                            El <strong class="highlight-interactive text-bu-accent">90%</strong> de las consultas rutinarias pueden ser resueltas por IA <strong class="highlight-interactive text-bu-main"> (24 horas al día, 7 días a la semana) </strong>, liberando al <strong class="highlight-interactive">ejecutivo</strong> para brindar la atención de alta calidad y calidez en casos complejos.
+                        </p>
+                    </div>
+
+                    
+                    <!-- Bloque de Gráfica 2: Eficiencia -->
+<div class="pt-4">
+                        <h5 class="text-lg font-semibold text-bu-main mb-6 text-center flex items-center justify-center">
+                            <span class="text-2xl mr-2 text-bu-accent">📊</span> Optimización de Eficiencia Operativa
+                        </h5>
+                        
+                        <!-- Contenedor de Gráfica 2 -->
+<div class="chart-container liquid-glass-card p-4 mb-8 h-[20rem] md:h-[25rem] relative"> 
+                            <canvas id="efficiencyChart"></canvas>
+                        </div>
+                        
+                        <!-- Descripción 2 -->
+<p class="text-center text-gray-700 mt-6 leading-normal text-sm mb-0">
+                            Reducción de costos operativos de hasta <strong class="highlight-interactive text-bu-accent">30%</strong>, permitiendo al Ejecutivo enfocarse en la <strong class="highlight-interactive">venta consultiva</strong> de mayor valor y rentabilidad.
+                        </p>
                     </div>
                 </div>
             </div>
             
-            <!-- Matriz de Funciones (FICHAS AZULES DESTACADAS) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
-                <!-- ACCESO FINANCIERO -->
-                <div class="strategic-card visual-card">
-                    <span class="text-4xl text-indigo-600 block mb-2 font-extrabold">1.</span>
-                    <h5 class="text-lg font-bold text-indigo-800">Acceso Financiero</h5>
-                    <p class="text-sm text-section mt-1">Facilitar e impulsar la colocación de cartera para Personas Naturales y Jurídicas, abriendo puertas al sistema.</p>
-                </div>
-                <!-- CAPTACIÓN MASIVA -->
-                <div class="strategic-card visual-card">
-                    <span class="text-4xl text-indigo-600 block mb-2 font-extrabold">2.</span>
-                    <h5 class="text-lg font-bold text-indigo-800">Captación Masiva</h5>
-                    <p class="text-sm text-section mt-1">Asegurar la adquisición masiva de cuentas de ahorro y otros instrumentos de captación, consolidando la liquidez.</p>
-                </div>
-                <!-- INVERSIÓN ESTRATÉGICA -->
-                <div class="strategic-card visual-card">
-                    <span class="text-4xl text-indigo-600 block mb-2 font-extrabold">3.</span>
-                    <h5 class="text-lg font-bold text-indigo-800">Inversión Estratégica</h5>
-                    <p class="text-sm text-section mt-1">Promoción activa y gestión especializada del Depósito a Plazo Fijo (DPF) como eje de inversión.</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- SECCIÓN 3: PILARES DE CULTURA Y SERVICIO (FONDO BLANCO) -->
-    <section class="py-16 md:py-28 bg-white animate-in" style="animation-delay: 0.6s;">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-            <div class="text-center">
-                <h3 class="text-2xl md:text-3xl font-extrabold text-blue-900 mb-3">3. Cultura de Servicio: Los Pilares Innegociables</h3>
-                <p class="text-section max-w-3xl mx-auto text-sm">
-                    La base de una relación duradera con el cliente reside en dos pilares que deben ser aplicados simultáneamente en cada interacción.
-                </p>
-            </div>
-
-            <!-- Diagrama de Pilares con colores más institucionales y hover celeste -->
-            <div class="pillar-diagram pt-6 grid grid-cols-1 md:grid-cols-5 gap-6">
-                <!-- Pilar 1: Inclusión (2 columnas) -->
-                <div class="pillar-item border-indigo-500 visual-card md:col-span-2">
-                    <div class="text-4xl mb-2 text-indigo-600">&#9733;</div>
-                    <h4 class="text-lg font-extrabold text-blue-900 mb-1">Inclusión Financiera</h4>
-                    <p class="text-sm text-section">
-                        Garantizar el servicio universal y guiar a los clientes hacia la digitalización (ej. <strong>UNImóvil Plus</strong>).
-                    </p>
-                </div>
-
-                <!-- Flecha de Interdependencia (1 columna dedicada, central - AZUL OSCURO) -->
-                <div class="hidden md:flex pillar-interdependency md:col-span-1">
-                    <span class="text-4xl text-blue-900">&#x21C6;</span> 
-                    <p class="text-xs font-extrabold mt-1 text-blue-900">INTERDEPENDENCIA</p>
-                </div>
-                
-                <!-- Flecha de Interdependencia (Mobile view only - AZUL OSCURO) -->
-                <div class="md:hidden pillar-interdependency">
-                    <span class="text-4xl text-blue-900">&#x2193;</span> 
-                    <p class="text-xs font-extrabold mt-1 text-blue-900">INTERDEPENDENCIA</p>
-                </div>
-
-
-                <!-- Pilar 2: Empatía (2 columnas) -->
-                <div class="pillar-item border-red-500 visual-card md:col-span-2">
-                    <div class="text-4xl mb-2 text-red-600">&#10084;</div>
-                    <h4 class="text-lg font-extrabold text-blue-900 mb-1">Empatía y Calidez</h4>
-                    <p class="text-sm text-section">
-                        Principio rector para construir confianza. Escucha activa, entendimiento y respuesta humana.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECCIÓN 4: PROPUESTA ESTRATÉGICA UNIBOT (IA) (FONDO BLANCO) -->
-    <section class="py-16 md:py-28 bg-white animate-in" style="animation-delay: 0.8s;">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-            <div class="text-center">
-                <h3 class="text-2xl md:text-3xl font-extrabold text-blue-900 mb-3">4. Propuesta de Valor: UniBot, Potenciando al Ejecutivo</h3>
-                <p class="text-section max-w-3xl mx-auto text-sm">
-                    UniBot (IA) es la palanca estratégica que transforma la eficiencia. Los siguientes gráficos ilustran el **impacto cuantificable** de la automatización en la operatividad del Ejecutivo, permitiendo un enfoque total en la <strong>Venta Consultiva</strong>.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center pt-4">
-                <!-- Columna 1: Imagen Digital - UniBot -->
-                <div class="lg:col-span-1">
-                    <img src="https://i.ibb.co/GvqcpbNp/Generated-Image-October-25-2025-8-56-PM.png" alt="Imagen del Chatbot UniBot" class="visual-card rounded-xl shadow-xl w-full object-cover h-64 lg:h-[36rem]" onerror="this.onerror=null;this.src='https://placehold.co/400x280/1e3a8a/ffffff?text=UniBot+IA';">
-                </div>
-                
-                <!-- Columna 2: Gráficos -->
-                <div class="lg:col-span-1 space-y-5">
-                    <!-- Gráfico 1: Impacto en Tareas (Donut) -->
-                    <div class="p-4 bg-white rounded-xl shadow-xl visual-card">
-                        <h4 class="text-base font-bold text-center text-blue-900 mb-2">Redistribución de Esfuerzos</h4>
-                        <div class="chart-container h-[200px] max-h-[250px]">
-                            <canvas id="focoChart"></canvas>
-                        </div>
+            
+            
+            <!-- Botón: Probar UniBot Ahora (Fuera de la ficha, debajo de ella) -->
+            <div class="my-12 text-center pt-8">
+                <a id="chatbot-button" href="https://cdn.botpress.cloud/webchat/v3.3/shareable.html?configUrl=https://files.bpcontent.cloud/2025/10/26/01/20251026010525-DVXT97UW.json" target="_blank" 
+                   class="inline-block chatbot-button-stylish text-white font-bold py-4 px-10 rounded-xl transition-all duration-300">
+                    <div class="flex flex-col items-center justify-center">
+                        
+                        <!-- Icono del Chancho -->
+<img src="https://i.ibb.co/8D2611Wn/CHANCHO.png" 
+                             alt="Chanchito Icon" 
+                             class="chancho-icon"
+                             onerror="this.onerror=null;this.src='https://placehold.co/100x100/FFFFFF/000000?text=🐖';"
+                        >
+                        <span class="text-lg uppercase">Probar UniBot Ahora</span>
                     </div>
-                    
-                    <!-- Gráfico 2: Mejora de Métricas (Barra) -->
-                    <div class="p-4 bg-white rounded-xl shadow-xl visual-card">
-                        <h4 class="text-base font-bold text-center text-blue-900 mb-2">Métricas Clave de Eficiencia</h4>
-                        <div class="chart-container h-[200px] max-h-[250px]">
-                            <canvas id="metricasChart"></canvas>
-                        </div>
-                    </div>
-                </div>
+                </a>
             </div>
+            
+        </section>
 
-            <!-- Conclusión con MÁS ESPACIO ARRIBA y TEXTO REDUCIDO -->
-            <div class="mt-10 pt-8 border-t-2 border-blue-200">
-                 <!-- Texto de conclusión ajustado y reducido de XL a LG -->
-                 <p class="text-lg font-extrabold text-center text-blue-900">
-                    <span class="text-blue-700">Conclusión:</span> El Ejecutivo potenciado por UniBot es el garante de la expansión digital del Banco Unión S.A.
-                </p>
-                <!-- BOTÓN PROBAR CHATBOT (MÁS ELEGANTE Y AZUL) -->
-                <div class="flex justify-center mt-6">
-                    <a href="https://cdn.botpress.cloud/webchat/v3.3/shareable.html?configUrl=https://files.bpcontent.cloud/2025/10/26/01/20251026010525-DVXT97UW.json" target="_blank" 
-                       class="inline-flex py-4 px-10 text-xl font-extrabold text-white bg-blue-900 rounded-full shadow-2xl transition duration-300 ease-in-out hover:bg-blue-700 unibot-btn-pulse unibot-button">
-                        <span class="text-4xl mb-1">&#x1F916;</span> <!-- Robot Emoji Icon más grande -->
-                        Probar UniBot Ahora
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
-    <footer class="text-center mt-12 py-6 bg-blue-900 text-blue-200 text-xs">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p>Documento de Estrategia de Servicio al Cliente | Banco Unión S.A. © 2025</p>
+    
+    <!-- FOOTER -->
+<footer class="bg-bu-dark text-gray-300">
+        
+        <!-- Contenido del Footer -->
+<div class="container mx-auto px-6 py-8 text-center">
+            <p class="text-sm">&copy; 2025 Propuesta de Valor - Ejecutivo de Servicio al Cliente. Todos los derechos reservados.</p>
+            <p class="mt-1 text-xs text-bu-light">Desarrollado por Lic. Noelia Karen Alanoca Mamani</p>
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const productCards = document.querySelectorAll('.product-card');
-            const productDescription = document.getElementById('product-description');
-            
-            let focoChartInstance = null;
-            let metricasChartInstance = null;
+    
+    <!-- LÓGICA JAVASCRIPT -->
+<script>
+        // Array de URLs de las imágenes del Hero
+        const heroImages = document.querySelectorAll('.hero-image');
+        let currentImageIndex = 0;
+        const transitionTime = 5000; // 5 segundos
+        
+        // URLs de las imágenes del carrusel infinito (LISTA CORREGIDA)
+        const carouselImageUrls = [
+            'https://abi.bo/images/2025/Marzo/24/7dvtjilo.png',
+            'https://www.economy.com.bo/asset/thumbnail,992,558,center,center/media/economy/images/2024/01/08/2024010814443963659.jpg',
+            'https://www.elalteno.com.bo/sites/default/files/202501/union%20tapa.jpg',
+            'https://www.mintrabajo.gob.bo/wp-content/uploads/2024/12/WhatsApp-Image-2024-12-20-at-6.27.58-PM.jpeg', // Nueva imagen
+            'https://www.elalteno.com.bo/sites/default/files/inline-images/union%201.jpg',
+            'https://abi.bo/images/2025/Marzo/24/p8li1mme.png',
+        ];
 
-            // Definición de detalles de productos
-            const productDetails = {
-                'Normal': 'Cuenta de ahorro tradicional para transacciones diarias y ahorro básico, esencial para la inclusión financiera.',
-                'Uniplus': 'Cuenta de ahorro con tasas de interés preferenciales y beneficios adicionales, ideal para clientes con saldos mayores.',
-                'Funcionario': 'Cuenta diseñada específicamente para funcionarios públicos, con condiciones y accesos especiales para el pago de salarios y beneficios.',
-                'Mujer': 'Producto de ahorro enfocado en las necesidades financieras de la mujer boliviana, promoviendo su autonomía económica.',
-                'MujerUniplus': 'Combina los beneficios de la cuenta Mujer con las tasas preferenciales de Uniplus, ofreciendo un ahorro potenciado.',
-                'Miniplus': 'Cuenta de ahorro diseñada para fomentar el ahorro en los más jóvenes, sirviendo como puerta de entrada al sistema financiero.',
-                'Futuros': 'Cuenta de ahorro programado para alcanzar metas a largo plazo (educación, vivienda), con una estructura de depósito disciplinada.',
-                'DPF': 'Depósito a Plazo Fijo. Principal producto de inversión. Ofrece una rentabilidad fija y segura en un plazo determinado, clave para la captación de fondos del banco.'
+        // Variables de control para el carrusel continuo
+        let scrollPosition = 0;
+        let baseScrollSpeed = 0.5; // Velocidad normal
+        let slowScrollSpeed = baseScrollSpeed * 0.3; // 30% de la velocidad normal
+        let currentScrollSpeed = baseScrollSpeed;
+        let animationFrameId = null;
+
+
+        // Registra el plugin de DataLabels globalmente
+        Chart.register(ChartDataLabels);
+
+        function startHeroImageTransition() {
+            // Oculta la imagen actual
+            heroImages[currentImageIndex].classList.remove('active');
+
+            // Calcula el índice de la siguiente imagen
+            currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+
+            // Muestra la siguiente imagen
+            heroImages[currentImageIndex].classList.add('active');
+        }
+        
+        /**
+         * Crea el carrusel infinito duplicando las imágenes originales.
+         */
+        function initializeCarousel() {
+            const track = document.getElementById('carousel-track');
+            
+            // Combina las URLs originales con una copia de las mismas
+            // Se duplica 3 veces para asegurar la continuidad en pantallas grandes
+            const totalUrls = carouselImageUrls.concat(carouselImageUrls).concat(carouselImageUrls);
+
+            totalUrls.forEach(url => {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('carousel-image-wrapper');
+                
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Imagen Institucional Banco Unión';
+                img.classList.add('carousel-image');
+                
+                // Fallback en caso de que la imagen no cargue
+                img.onerror = function() {
+                    this.onerror = null; 
+                    this.src = 'https://placehold.co/300x120/E0E0E0/003775?text=BU';
+                };
+                
+                wrapper.appendChild(img);
+                track.appendChild(wrapper);
+            });
+            
+            // Calculamos el ancho total (3 veces el set de imágenes)
+            calculateTrackWidth();
+        }
+
+        /**
+         * Calcula el ancho total de UN SOLO SET de imágenes para el punto de reseteo.
+         */
+        function calculateTrackWidth() {
+            const track = document.getElementById('carousel-track');
+            if (!track) return;
+            
+            const originalItems = track.querySelectorAll('.carousel-image-wrapper');
+            // Solo necesitamos el ancho de N elementos (el set original)
+            const setLength = carouselImageUrls.length; 
+
+            let imagesLoaded = 0;
+            const images = track.querySelectorAll('.carousel-image');
+
+            const checkAndCalculate = () => {
+                imagesLoaded++;
+                // Solo necesitamos que la cantidad de imágenes cargadas (o fallidas) sea igual al tamaño del set original
+                if (imagesLoaded === setLength) { 
+                    let originalTrackWidth = 0;
+                    // Recorremos solo el primer set de elementos
+                    for (let i = 0; i < setLength; i++) {
+                        // Usamos clientWidth ya que offsetWidth puede ser 0 si la imagen aún no se renderizó completamente
+                        originalTrackWidth += originalItems[i].clientWidth || 300; // 300px fallback 
+                    }
+                    track.dataset.fullWidth = originalTrackWidth.toString();
+                    // Reiniciar la animación si ya se detuvo por falta de ancho
+                    if (!animationFrameId) {
+                        animateCarousel();
+                    }
+                }
             };
 
-            // Función para activar una tarjeta y mostrar su descripción
-            function activateCard(card) {
-                const productName = card.getAttribute('data-product');
-                productDescription.textContent = productDetails[productName] || 'Descripción no disponible.';
-                
-                // Resetear el estilo de todas las tarjetas
-                productCards.forEach(c => c.classList.remove('active'));
-                
-                // Activar la tarjeta actual
-                card.classList.add('active');
+            for (let i = 0; i < setLength * 3; i++) { // Iteramos sobre todos los elementos creados (3 sets)
+                const img = images[i];
+                if (img.complete) {
+                    // Contamos solo los del primer set
+                    if (i < setLength) checkAndCalculate(); 
+                } else {
+                    // Agregamos listeners solo a los del primer set para el cálculo
+                    if (i < setLength) { 
+                        img.onload = checkAndCalculate;
+                        img.onerror = checkAndCalculate; // Contar si falla para no detener la animación
+                    }
+                }
             }
 
-            // Interacción de productos
-            productCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    activateCard(card);
+            // Si ya cargaron antes del listener (o si no hay imágenes), intenta calcular inmediatamente.
+            if (imagesLoaded >= setLength) {
+                 // Esto solo se ejecutará si el bucle for completo no pudo iniciar el cálculo (caso raro)
+            }
+        }
+
+
+        /**
+         * Lógica de animación de desplazamiento.
+         */
+        function animateCarousel() {
+            const track = document.getElementById('carousel-track');
+            if (!track) {
+                animationFrameId = null;
+                return;
+            }
+            
+            const fullWidth = parseFloat(track.dataset.fullWidth || '0'); 
+            
+            if (fullWidth === 0) {
+                // Si el ancho es 0, intentamos recalcular y esperamos el siguiente frame
+                calculateTrackWidth();
+                animationFrameId = requestAnimationFrame(animateCarousel);
+                return;
+            }
+
+            // Desplazamiento del track con la velocidad actual
+            scrollPosition += currentScrollSpeed;
+            
+            // CORRECCIÓN: Reseteo: si la posición es mayor o igual al ancho de UN SOLO SET,
+            // restamos el ancho de UN SOLO SET. Esto hace que el desplazamiento "salte"
+            // de la última imagen del primer set, a la primera imagen del set duplicado, 
+            // manteniendo el movimiento continuo sin que el usuario vea el reinicio.
+            if (scrollPosition >= fullWidth) {
+                scrollPosition -= fullWidth; 
+            }
+            
+            track.style.transform = `translateX(-${scrollPosition}px)`;
+
+            animationFrameId = requestAnimationFrame(animateCarousel);
+        }
+
+        /**
+         * Función para detener y reanudar la animación con la velocidad deseada.
+         */
+        function setCarouselSpeed(speed) {
+            currentScrollSpeed = speed;
+            if (!animationFrameId) {
+                // Si estaba pausado, reinicia la animación (aunque con requestAnimationFrame no debería pausarse)
+                animateCarousel();
+            }
+        }
+        
+        /**
+         * Event Listeners para el cambio de velocidad.
+         */
+        function setupCarouselListeners() {
+            const carouselContainer = document.getElementById('full-width-carousel-container');
+            if (!carouselContainer) return;
+
+            // Ralentizar al entrar
+            carouselContainer.addEventListener('mouseenter', () => {
+                setCarouselSpeed(slowScrollSpeed);
+            });
+
+            // Volver a la velocidad normal al salir
+            carouselContainer.addEventListener('mouseleave', () => {
+                setCarouselSpeed(baseScrollSpeed);
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // 1. Inicializa el carrusel infinito y calcula su ancho
+            initializeCarousel();
+            // 2. Inicia la animación de desplazamiento y los listeners de velocidad
+            // La animación se inicia de manera recursiva en animateCarousel una vez que el ancho es conocido
+            animateCarousel(); 
+            setupCarouselListeners();
+            
+            // 3. Inicia la transición de imágenes al cargar la página (Hero Banner)
+            if (heroImages.length > 1) {
+                setInterval(startHeroImageTransition, transitionTime);
+            }
+
+            // Lógica de Menú Móvil
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Lógica de Scroll para alternar el efecto Glass de la cabecera
+            const header = document.querySelector('header');
+            const heroSection = document.querySelector('.hero-section');
+            // Obtener la altura del Hero para calcular cuándo cambiar el header style
+            const scrollThreshold = heroSection.offsetHeight - header.offsetHeight; 
+
+            function handleScroll() {
+                // CAMBIO: La cabecera base ya es del color del fondo. 
+                // Al hacer scroll, la volvemos más transparente (scrolled-down)
+                if (window.scrollY > scrollThreshold) {
+                    header.classList.add('scrolled-down');
+                } else {
+                    header.classList.remove('scrolled-down');
+                }
+            }
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); 
+
+            // Intersection Observer para activar el enlace de navegación (ScrollSpy)
+            const sections = document.querySelectorAll('section');
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px 0px -50% 0px", 
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const activeSectionId = entry.target.id;
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.dataset.section === activeSectionId) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            // Observar solo las secciones que están dentro del main-content-container
+            document.querySelectorAll('.main-content-container section').forEach(section => observer.observe(section));
+
+            // Desplazamiento suave para los enlaces de anclaje
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if(targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                    
+                    // Cierra el menú móvil si está abierto
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
                 });
             });
 
-            // Seleccionar el primer producto por defecto al cargar la página
-            if (productCards.length > 0) {
-                activateCard(productCards[0]); // Selecciona "Caja de Ahorro Normal" por defecto
-            }
+            // --- Configuración y Creación de Gráficas Chart.js ---
+            
+            // Configuración general de Chart.js
+            Chart.defaults.font.family = 'Montserrat';
+            Chart.defaults.color = '#003775'; // bu-dark
 
-            // Inicialización de Gráficos
-            function initCharts() {
-                // Gráfico 1: Foco
-                const focoCtx = document.getElementById('focoChart').getContext('2d');
-                focoChartInstance = new Chart(focoCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Rutinario, Automatizado (UniBot - 80%)', 'Alto Valor, Venta Consultiva (Ejecutivo - 20%)'],
-                        datasets: [{
-                            data: [80, 20],
-                            backgroundColor: ['#3b82f6', '#1e3a8a'], // Blue-500 y Blue-900
-                            borderColor: '#ffffff',
-                            borderWidth: 4,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: '70%',
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: { size: 11, weight: '600' },
-                                    color: '#404040',
-                                    padding: 10
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed !== null) {
-                                            label += context.parsed + '%';
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-
-                // Gráfico 2: Métricas
-                const metricasCtx = document.getElementById('metricasChart').getContext('2d');
-                metricasChartInstance = new Chart(metricasCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Resolución FCR (%)', 'Reducción de Costos (%)'],
-                        datasets: [{
-                            label: 'Impacto Proyectado',
-                            data: [85, 30],
-                            backgroundColor: ['#1e3a8a', '#3b82f6'],
-                            borderRadius: 6,
-                            maxBarThickness: 30
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        indexAxis: 'y',
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-                                min: 0,
-                                max: 100,
-                                grid: {
-                                    drawOnChartArea: true,
-                                    color: '#e5e7eb'
-                                },
-                                ticks: {
-                                     color: '#404040',
-                                     font: { size: 10 }
-                                }
-                            },
-                            y: {
-                                grid: {
-                                    display: false,
-                                },
-                                ticks: {
-                                     color: '#1e3a8a',
-                                     font: {
-                                        size: 13,
-                                        weight: '700'
-                                     }
+            // Gráfica de Anillo para Mejora de Experiencia
+            const ctxExperience = document.getElementById('experienceChart').getContext('2d');
+            new Chart(ctxExperience, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Consultas Resueltas por IA (90%)', 'Requieren Ejecutivo Humano (10%)'],
+                    datasets: [{
+                        data: [90, 10],
+                        backgroundColor: [
+                            '#00B4C8', /* Cian Corporativo (bu-main) */
+                            '#E0E0E0'  /* Gris Claro (bu-light) */
+                        ],
+                        borderColor: [
+                            '#f0f4ff', // Fondo body para que el borde parezca un hueco
+                            '#f0f4ff'
+                        ],
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 11 
                                 }
                             }
                         },
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label = context.label;
-                                        }
-                                        if (context.parsed.x !== null) {
-                                            label += ': ' + context.parsed.x + '%';
-                                        }
-                                        return label;
-                                    }
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    // Muestra solo la etiqueta antes del paréntesis y el porcentaje
+                                    return `${context.label.split(' (')[0]}: ${context.raw}%`;
                                 }
                             }
                         }
                     }
-                });
-            }
+                }
+            });
 
-            // Inicializar gráficos
-            initCharts();
+            // Gráfica de Barras para Optimización de Eficiencia
+            const ctxEfficiency = document.getElementById('efficiencyChart').getContext('2d');
+            new Chart(ctxEfficiency, {
+                type: 'bar',
+                data: {
+                    labels: ['Costo Actual', 'Costo Proyectado con UniBot'],
+                    datasets: [{
+                        label: 'Costo Operativo Relativo',
+                        data: [100, 70], // 30% de reducción
+                        backgroundColor: [
+                            '#D90059', /* Rojo/Magenta (bu-accent) - Costo Actual */
+                            '#003775'  /* Azul Oscuro (bu-dark) - Costo Proyectado */
+                        ],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    // Registro del plugin de DataLabels
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += `${context.raw}%`;
+                                    if(context.dataIndex === 1) {
+                                        label += ' (Reducción del 30%)';
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        // Configuración del DataLabels
+                        datalabels: {
+                            color: '#FFFFFF', // Texto blanco para que resalte
+                            anchor: 'center',
+                            align: 'center',
+                            formatter: (value) => {
+                                // Muestra el valor de la barra seguido de '%'
+                                return value + '%'; 
+                            },
+                            font: {
+                                weight: 'bold',
+                                size: 14 // Tamaño de letra más grande
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 110,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                color: '#1f2937',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#1f2937',
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
         });
     </script>
 </body>
